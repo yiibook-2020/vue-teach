@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>计算属性</title>
+	</head>
+	<body>
+		<div id="app">
+			<p>JS表达式：number_1 + number_2 = {{number_1 + number_2}}</p>
+			<p>methods：number_1 + number_2 = {{a()}}</p>
+			<p>methods：number_1 + number_2 = {{a()}}</p>
+			<p>computed：number_1 + number_2 = {{b}}</p>
+			<p>computed：number_1 + number_2 = {{b}}</p>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				number_1: 5,
+				number_2: 7
+			},
+			methods:{
+				a: function() {
+					console.log('methods');
+					return this.number_1 - this.number_2;
+				}
+			},
+			computed:{
+				b: function() {
+					console.log('computed');
+					return this.number_1 + this.number_2;
+				}
+			}
+		});
+	</script>
+</html>

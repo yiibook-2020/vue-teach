@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>表单绑定</title>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				用户名: <input type="text" v-model="formData.username">
+			</div>
+			<div>
+				密码: <input type="password" v-model="formData.password">
+			</div>
+			<div>
+				选择年级：
+				<select v-model="formData.class_year">
+					<option value="2017">2017级</option>
+					<option value="2018">2018级</option>
+					<option value="2019">2019级</option>
+				</select>
+			</div>
+			<div class="input-item">
+				<label>性别：</label>
+				<input type="radio" value="男" v-model="formData.gender"> 男
+				<input type="radio" value="女" v-model="formData.gender"> 女
+			</div>
+			<div>
+				<button @click="register()">注册</button>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				formData:{
+					username: "",
+					password: "",
+					class_year: "2017",
+					gender: "女"
+				}
+			},
+			methods:{
+				register: function() {
+					console.log(this.formData);
+				}
+			}
+		});
+	</script>
+</html>

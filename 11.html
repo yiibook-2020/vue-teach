@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>样式绑定</title>
+		<style>
+			.color_red{
+				color: red;
+			}
+			.normal{
+				color: gray;
+			}
+			.normal.active{
+				color: blue;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app">
+			<div :class="style_1">使用v-bind实现普通样式绑定</div>
+			<div class="normal" :class="{active: isActice}" @click="changeStyle()">样式绑定对象</div>
+			<div :class="[isStyle2 ? 'style_2' : style_1]">样式绑定数组</div>
+			<div :style="{color: style_color_red, fontSize: size + 'px', backgroundColor: 'gray'}">绑定内嵌样式</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				style_1: "color_red",
+				isActice: true,
+				isStyle2: false,
+				style_color_red: 'red',
+				size: 18
+			},
+			methods:{
+				changeStyle: function() {
+					this.isActice = !this.isActice;
+				}
+			}
+		});
+	</script>
+</html>

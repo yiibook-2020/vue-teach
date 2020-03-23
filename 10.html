@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>表单绑定 + 事件绑定 + 列表渲染</title>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				id: <input type="text" v-model="user.id">
+				name: <input type="text" v-model="user.name">
+				score: <input type="text" v-model="user.score">
+				<button @click="addInfo()">添加</button>
+				<button @click="getInfo()">初始化</button>
+			</div>
+			<ul>
+				<li v-for="item,key in userLists">
+					{{key}} -- {{item.id}} -- {{item.name}} -- {{item.score}}
+					<a href="" @click.prevent="deleteInfo(key)">删除</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				userLists: [],
+				user: {
+					id: 0,
+					name: "",
+					score: 0
+				}
+			},
+			mounted() {
+				this.getInfo();
+			},
+			methods: {
+				getInfo: function(){
+					var userLists = window.localStorage.getItem('userLists');
+					// console.log(userLists);
+					// console.log(JSON.parse(userLists));
+					if(userLists) {
+						this.userLists = JSON.parse(userLists);
+					} else {
+						alert('暂无学生信息');
+					}
+				},
+				addInfo: function() {
+					console.log('addInfo');
+					var user = {
+						id: this.user.id,
+						name: this.user.name,
+						score: this.user.score
+					};
+					this.userLists.push(user);
+					// sessionStorage localStorage  key/value
+					// console.log(this.userLists);
+					// console.log(JSON.stringify(this.userLists));
+					
+					window.localStorage.setItem('userLists', JSON.stringify(this.userLists));
+				},
+				deleteInfo: function(index) {
+					console.log('deleteInfo:' + index);
+					this.userLists.splice(index, 1);
+					window.localStorage.setItem('userLists', JSON.stringify(this.userLists));
+				}
+			}
+		});
+	</script>
+</html>

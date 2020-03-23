@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>事件绑定 + 列表渲染</title>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				<button @click="addInfo()">添加</button>
+			</div>
+			<ul>
+				<li v-for="item,key in userLists">
+					{{key}} -- {{item.id}} -- {{item.name}} -- {{item.score}}
+					<a href="" @click.prevent="deleteInfo(key)">删除</a>
+				</li>
+			</ul>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				userLists: [
+					{
+						id: 1,
+						name: "张三",
+						score: 90
+					},
+					{
+						id: 2,
+						name: "李四",
+						score: 85
+					},
+					{
+						id: 3,
+						name: "王五",
+						score: 89
+					}
+				]
+			},
+			methods: {
+				addInfo: function() {
+					console.log('addInfo');
+					var user = {
+						id: 4,
+						name: "赵六",
+						score: 90
+					};
+					this.userLists.push(user);
+				},
+				deleteInfo: function(index) {
+					console.log('deleteInfo:' + index);
+					this.userLists.splice(index, 1);
+				}
+			}
+		});
+	</script>
+</html>

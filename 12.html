@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>样式绑定案例</title>
+		<style>
+			* {
+			    margin: 0;
+			    padding: 0;
+			}
+			.warp{
+			    width: 800px;
+			    margin: 20px auto;
+			}
+			#tab-box {
+			    padding: 5px 0px;
+			}
+			#tab-box span{
+			    color: #999999;
+			    padding: 5px 20px;
+			    cursor: pointer;
+			}
+			#tab-box span.active{
+			    background-color: #cc0000;
+			    color: #ffffff;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" class="warp">
+		    <div id="tab-box">
+				<!-- <span v-for="cate,index in cateLists" :class="{active: currentIndex == index}" @click="changeCurrentIndex(index)">
+					{{cate.title}}
+				</span> -->
+				<span v-for="cate in cateLists" :class="{active: currentCatId == cate.cat_id}" @click="changeCurrentCatId(cate.cat_id)">
+					{{cate.title}}
+				</span>
+		        <!-- <span :class="{active : currentIndex == 0}" @click="changeCurrentIndex(0)">推荐</span>
+		        <span :class="{active : currentIndex == 1}" @click="changeCurrentIndex(1)">关注</span>
+		        <span :class="{active : currentIndex == 2}" @click="changeCurrentIndex(2)">本地</span>
+		        <span :class="{active : currentIndex == 3}" @click="changeCurrentIndex(3)">国内</span>
+		        <span :class="{active : currentIndex == 4}" @click="changeCurrentIndex(4)">国际</span> -->
+		    </div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				currentIndex: 0,
+				currentCatId: 1,
+				cateLists: [
+					{
+						cat_id: 1,
+						title: '推荐'
+					},
+					{
+						cat_id: 2,
+						title: '本地'
+					},
+					{
+						cat_id: 3,
+						title: '国内'
+					},
+					{
+						cat_id: 4,
+						title: '国际'
+					},
+					{
+						cat_id: 5,
+						title: '关注'
+					}
+				]
+			},
+			methods:{
+				changeCurrentIndex: function(index) {
+					this.currentIndex = index;
+				},
+				changeCurrentCatId: function(cat_id) {
+					this.currentCatId = cat_id;
+					// 根据分类ID 服务端获取数据
+				}
+			}
+		});
+	</script>
+</html>

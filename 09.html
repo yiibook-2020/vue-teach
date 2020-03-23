@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>表单绑定 + 条件渲染</title>
+	</head>
+	<body>
+		<div id="app">
+			<div v-if="isLogin">
+				欢迎您！{{username}} -- {{realname}} <a href="" v-on:click.prevent="logout()">退出</a>
+				<ul>
+					<li v-for="info in infoLists">
+						{{info.title}}
+					</li>
+				</ul>
+			</div>
+			<div v-else>
+				尚未登录，请先登录
+				<!-- <a href="" v-on:click.prevent="login()">立即登录</a> -->
+				<div>
+					用户名: <input type="text" v-model="username">
+				</div>
+				<div>
+					密码: <input type="password" v-model="password">
+				</div>
+				<div>
+					<button @click="login()">登录</button>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				username: "",
+				realname: "",
+				user_id: 0,
+				password: "",
+				isLogin: false,
+				infoLists: []
+			},
+			methods: {
+				login: function() {
+					console.log('login');
+					// 前端校验
+					if (this.username == '') {
+						alert('请填写用户名');
+						return;
+					}
+					if (this.password == '') {
+						alert('请填写密码');
+						return;
+					}
+					var params = {
+						username: this.username,
+						password: this.password
+					};
+					var that = this;
+					axios.post('http://teach.test/api/v1/user/login', params)
+						.then(function(response) {
+							var result = response.data;
+							console.log(result);
+							if (result.status == 200) {
+								that.isLogin = true;
+								that.username = result.data.username;
+								that.user_id = result.data.id;
+								that.realname = result.data.realname;
+								that.getInfo();
+							} else {
+								alert(result.message);
+							}
+						})
+						.catch(function(error) {
+							console.log(error);
+						});
+					// 模拟服务端校验
+					// if (this.username != 'zhangsan' || this.password != '123456') {
+					// 	alert('您的用户名或者密码填写错误');
+					// 	return;
+					// } else {
+					// 	this.isLogin = true;
+					// }
+				},
+				logout: function() {
+					this.isLogin = false;
+				},
+				getInfo: function() {
+					var that = this;
+					axios.get('http://teach.test/api/v1/info/lists?user_id=' + this.user_id)
+						.then(function(response) {
+							var result = response.data;
+							console.log(result);
+							if (result.status == 200) {
+								that.infoLists = result.data;
+							}
+						})
+						.catch(function(error) {
+							console.log(error);
+						});
+				}
+			}
+		});
+	</script>
+</html>

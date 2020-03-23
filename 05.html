@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>属性绑定</title>
+	</head>
+	<body>
+		<div id="app">
+			<div>
+				<!-- <a v-bind:href="site_url" target="_blank">{{site_name}}</a> -->
+				<!-- <a :href="site_url" target="_blank">{{site_name}}</a> -->
+				<ul>
+					<li v-for="site in sites">
+						<a :href="site.site_url" target="_blank">{{site.site_name}}</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				sites: [
+					{
+						site_name: "百度",
+						site_url: "https://www.baidu.com"
+					},
+					{
+						site_name: "腾讯",
+						site_url: "https://www.qq.com"
+					}
+				]
+			}
+		});
+	</script>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>列表渲染</title>
+	</head>
+	<body>
+		<div id="app">
+			<ul>
+				<li v-for="item,key in userLists">
+					{{key}} -- {{item.id}} -- {{item.name}} -- {{item.score}}
+				</li>
+			</ul>
+			<div>
+				<p v-for="u,index in user">
+					{{index}}:{{u}}
+				</p>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				userLists: [
+					{
+						id: 1,
+						name: "张三",
+						score: 90
+					},
+					{
+						id: 2,
+						name: "李四",
+						score: 85
+					},
+					{
+						id: 3,
+						name: "王五",
+						score: 89
+					}
+				],
+				user: {
+					username: "zhangsan",
+					point: 300,
+					level: 2
+				}
+			}
+		});
+	</script>
+</html>

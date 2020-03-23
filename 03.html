@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>条件渲染</title>
+	</head>
+	<body>
+		<div id="app">
+			<p v-if="isLogin">
+				欢迎您！{{username}}
+			</p>
+			<p v-else>
+				尚未登录，请先登录
+			</p>
+			<!-- <p v-if="!isLogin">
+				尚未登录，请先登录
+			</p> -->
+			<p v-if="isShow">v-if 显示内容</p>
+			<p v-show="isShow">v-show 显示内容</p>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				username: "张三",
+				isLogin: false,
+				isShow: false
+			}
+		});
+	</script>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div id="app">
+			<!-- v-for="item,index in items" -->
+			<div v-for="book,index in bookLists"> 
+				{{index}} -- {{book.title}} -- {{book.price}}
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el:"#app",
+			data: {
+				bookLists: [
+					{
+						title: 'aaaaaaa',
+						price: 30
+					},
+					{
+						title: 'bbbbbbb',
+						price: 40
+					}
+				]
+			}
+		});
+	</script>
+</html>

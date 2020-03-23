@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>插值</title>
+	</head>
+	<body>
+		<div id="app">
+			<!-- 文本插值 -->
+			<h1>{{message.msg1}}</h1>
+			<p>{{message.msg2}}</p>
+			<!-- js表达式 -->
+			<p>{{1 + 2}}</p>
+			<p>{{a > b ? a : b}}</p>
+			<!-- html插值 -->
+			<p>{{message.msg3}}</p>
+			<p v-html="message.msg3"></p>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el: "#app",
+			data: {
+				message: {
+					msg1: "hello world 1",
+					msg2: "hello world 2",
+					msg3: "<b>hello world 3</b>"
+				},
+				a: 5,
+				b: 8,
+				user: {
+					username:"",
+					point: 0,
+					level: 1
+				}
+			}
+		});
+	</script>
+</html>

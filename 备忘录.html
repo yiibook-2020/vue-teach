@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Vue基础语法实验</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+				font-size: 14px;
+				color: #555555;
+			}
+			[v-cloak] {
+				display: none;
+			}
+			#app {
+				width: 800px;
+				margin: 0 auto;
+			}
+			.login-box{
+				width: 400px;
+				margin: 0 auto;
+			}
+			.login-title {
+				margin-top: 20px;
+				text-align: center;
+				color: #5F9EA0;
+				font-size: 24px;
+				font-weight: bold;
+				line-height: 48px;
+			}
+			.input-item {
+				margin-top: 20px;
+			}
+			.input-item input{
+				padding: 10px 20px;
+				width: 358px;
+			}
+			.button-item{
+				text-align: center;
+				margin-top: 20px;
+			}
+			.button-item button{
+				width: 400px;
+				border: none;
+				background-color: #5F9EA0;
+				color: #FFFFFF;
+				font-size: 20px;
+				font-weight: bold;
+				padding: 8px 0;
+				border-radius: 10px;
+			}
+			.error-info {
+				color:red;
+				padding: 20px 0px 0px;
+			}
+			.info-header {
+				padding: 20px 0px;
+				font-size: 16px;
+			}
+			.logo{
+				font-size: 28px;
+				font-weight: bold;
+			}
+			.login-info{
+				text-align: right;
+			}
+			.login-info span{
+				color: #cc0000;
+			}
+			.logout-button{
+				margin-left: 20px;
+				color: #0000aa;
+				text-decoration: none;
+			}
+			.note-form input{
+				padding: 5px 10px;
+				width: 200px;
+			}
+			.note-button {
+				background-color: #5F9EA0;
+				border: none;
+				color: #fff;
+				padding: 5px 10px;
+				margin-left: 10px;
+			}
+			.note-list{
+				margin-top: 20px;
+			}
+			/* table td, table th{border: 0;} */
+			table thead th{
+				background-color: #efefef;
+				line-height: 40px;
+				border-bottom: 1px solid #cccccc;
+			}
+			table tbody td {
+				line-height:40px;
+				border-bottom: 1px solid #cccccc;
+			}
+			.operation-button {
+				color: #0000aa;
+				text-decoration: none;
+			}
+			.complete{
+				color: #aaaaaa;
+				text-decoration: line-through;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="app" v-cloak>
+			<div class="login-box" v-if="!user.isLogin">
+				<div class="login-title">用户登录</div>
+				<div class="error-info">
+					{{errorInfo}}
+				</div>
+				<div class="input-item">
+					<input type="text" placeholder="请输入用户名" v-model="user.username">
+					
+				</div>
+				<div class="input-item">
+					<input type="password" placeholder="请输入密码" v-model="user.password">
+				</div>
+				<div class="button-item">
+					<button @click="login()">立即登录</button>
+				</div>
+			</div>
+			<div class="info-box" v-if="user.isLogin">
+				<div class="info-header">
+					<div class="logo">
+						17备忘录系统
+					</div>
+					<div class="login-info">
+						登录名：<span>{{user.username}}</span>
+						<a href="" class="logout-button" @click.prevent="logout()">退出</a>
+					</div>
+				</div>
+				<div class="note-box">
+					<div class="note-form">
+						<input type="text" placeholder="任务标题" v-model="note.title">
+						<button class="note-button" @click="addNote()">添加</button>
+						<button class="note-button" @click="clearNote()">清空备忘录</button>
+					</div>
+					<div class="note-list">
+						<table width="100%" border="0" cellspacing="0" cellpadding="0">
+							<thead>
+								<tr>
+									<th width="10%">编号</th>
+									<th width="50%">标题</th>
+									<th width="15%">状态</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="note,index in noteLists">
+									<td align="center">{{index + 1}}</td>
+									<td><span :class="{complete : note.isComplete == 1}">{{note.title}}</span></td>
+									<td align="center">{{note.isComplete == 0 ? '未完成' : '已完成'}}</td>
+									<td align="center">
+										<a href="" class="operation-button" @click.prevent="changeStatus(index)">{{note.isComplete == 0 ? '关闭任务' : '重启任务'}}</a> | 
+										<a href="" class="operation-button" @click.prevent="deleteNote(index)">删除</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script>
+		new Vue({
+			el:"#app",
+			data:{
+				user: {
+					username: "",
+					password: "",
+					isLogin: false
+				},
+				note: {
+					title: "",
+					isComplete: 0
+				},
+				noteLists: [],
+				errorInfo: ""
+			},
+			mounted() {
+				this.initUser();
+				if(this.user.isLogin) this.initNoteLists();
+			},
+			methods:{
+				initUser() {
+					var username = window.localStorage.getItem('username');
+					console.log(username);
+					if(username) {
+						this.user.username = username;
+						this.user.isLogin = true;
+					}
+				},
+				initNoteLists() {
+					var noteLists = window.localStorage.getItem('noteLists');
+					if(noteLists) {
+						this.noteLists = JSON.parse(noteLists);
+					}
+				},
+				addNote() {
+					if(this.note.title == '') {
+						alert('请输入备忘录标题'); return ;
+					}
+					var note = {
+						title: this.note.title,
+						isComplete: 0
+					}
+					this.noteLists.unshift(note);
+					this.saveNote();
+					this.note.title = "";
+				},
+				login() {
+					console.log('login');
+					// 登录验证
+					if(this.user.username == '') {
+						this.errorInfo = '用户名必须填写';
+						return ;
+					}
+					if(this.user.password == '') {
+						this.errorInfo = '密码必须填写';
+						return ;
+					}
+					// 模拟服务器校验
+					if(this.user.username != 'zhangsan' || this.user.password != '123456') {
+						this.errorInfo = '用户名或者密码错误';
+						return ;
+					} else {
+						window.localStorage.setItem('username', this.user.username);
+						this.user.isLogin = true;
+						this.initNoteLists();
+					}
+				},
+				logout() {
+					window.localStorage.removeItem('username');
+					this.user.isLogin = false;
+				},
+				clearNote() {
+					if(confirm('是否确定清空备忘录')){
+						window.localStorage.removeItem('noteLists');
+						this.noteLists = [];
+					}
+				},
+				changeStatus(index) {
+					this.noteLists[index].isComplete = !this.noteLists[index].isComplete;
+					this.saveNote();
+				},
+				deleteNote(index) {
+					if(confirm('是否确定删除该任务')){
+						this.noteLists.splice(index, 1);
+						this.saveNote();
+					}
+				},
+				saveNote() {
+					window.localStorage.setItem('noteLists', JSON.stringify(this.noteLists));
+				}
+			}
+		});
+	</script>
+</html>
